@@ -1,0 +1,1 @@
+{"name":"ses-metricas","version":"1.0.0","private":true,"description":"Gestão de métricas SES-PE com base Excel, sem banco de dados","scripts":{"build":"node scripts/build.cjs","start":"node scripts/dev.cjs","test":"node --test tests/*.test.cjs"},"engines":{"node":">=22"}}
