@@ -9,7 +9,6 @@
 .brand{gap:12px;padding:0 3px;margin-bottom:32px}.brand-emblem{display:grid;place-items:center;width:38px;height:38px;flex:none;color:#a9ceff;background:#ffffff0c;border:1px solid #ffffff16;border-radius:11px}.brand-emblem svg{width:24px;height:24px}.brand-copy{display:flex;flex-direction:column;gap:5px;min-width:0}.brand-copy strong{font-size:16px;line-height:1.2;font-weight:650;letter-spacing:-.4px;white-space:nowrap}.brand-copy small{font-size:10px;line-height:1.4;font-weight:450;color:#93aac7;white-space:nowrap}@media(max-width:760px){.brand{margin-bottom:16px}.brand-copy strong{font-size:17px}}
 
 
-.sprint-panel-frame{display:block;width:100%;height:calc(100vh - 260px);min-height:720px;border:1px solid #dbe5f0;border-radius:16px;background:#f1f5f9}.sprint-panel-frame:focus{outline:2px solid #287eff}@media(max-width:700px){.sprint-panel-frame{min-height:680px;height:80vh}}
 /* Responsive layout: keep wide tables inside their own scroll region. */
 .shell,main,#content,.heading>*,.panel-head>*,.overview-banner>*,.selector-panel>*,.filters>*,.stat{min-width:0}
 .stat strong,.stat small,.notice,.overview-banner p{overflow-wrap:anywhere}
@@ -76,3 +75,4 @@
  #nav::-webkit-scrollbar-track{background:transparent}
  .sidebar-bottom{margin-top:16px;padding-top:14px}
 }
+.multi-choice{border:1px solid #d4e1ef;border-radius:9px;background:#fafcff;position:relative}.multi-choice summary{cursor:pointer;padding:12px;min-height:44px;font-size:14px;color:#1b405f}.multi-options{max-height:240px;overflow:auto;padding:8px 12px;background:white;border-top:1px solid #e6ebf2}.multi-options label{display:flex;align-items:flex-start;gap:9px;font-size:13px;font-weight:400;line-height:1.6;padding:5px 0;color:#314965}.multi-options input{width:17px;min-height:17px;height:17px;flex:none;margin-top:3px}.donut-svg{position:relative;width:160px;height:160px;flex:none}.donut-svg svg{width:100%;height:100%}.donut-center{position:absolute;inset:44px 25px;display:grid;place-content:center;text-align:center;pointer-events:none}.donut-center strong{font-size:25px}.donut-center small{font-size:12px}.chart-tooltip{position:fixed;z-index:1000;max-width:min(320px,calc(100vw - 16px));padding:10px 12px;background:#102b48;color:white;border-radius:8px;font-size:12px;line-height:1.5;pointer-events:none;box-shadow:0 4px 15px #0003}.drill-bar{width:100%;border:0;background:transparent;padding:6px 0;text-align:left}.drill-stat{text-align:left}.sprint-information{display:flex;flex-wrap:wrap;gap:12px 22px}.sprint-information b,.sprint-information small{flex-basis:100%}
