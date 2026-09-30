@@ -66,3 +66,13 @@
  .donut-layout{flex-direction:column;align-items:center}.donut-legend{width:100%;max-width:none;min-width:0}
  .detail-grid{grid-template-columns:minmax(0,1fr)}.panel-head select{width:100%}
 }
+/* Keep all navigation links reachable in short desktop windows. */
+@media(min-width:1025px){
+ aside{height:100dvh;max-height:100dvh;overflow:hidden}
+ aside .brand,aside .sidebar-bottom{flex-shrink:0}
+ #nav{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;scrollbar-width:thin;scrollbar-color:#587495 transparent;padding-right:5px}
+ #nav::-webkit-scrollbar{width:6px}
+ #nav::-webkit-scrollbar-thumb{background:#587495;border-radius:8px}
+ #nav::-webkit-scrollbar-track{background:transparent}
+ .sidebar-bottom{margin-top:16px;padding-top:14px}
+}
