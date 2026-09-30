@@ -1,8 +1,8 @@
 (()=>{
 const key='ses-metricas-preferences-v1';
-function clean(value){return {projects:Array.isArray(value?.projects)?value.projects.filter(x=>typeof x==='string'):null,owners:Array.isArray(value?.owners)?value.owners.filter(x=>typeof x==='string'):null}}
-function read(storage){try{return clean(JSON.parse(storage.getItem(key)))}catch{return clean(null)}}
+function clean(value){return {demo:value?.demo!==false,sprintDefault:typeof value?.sprintDefault==='string'?value.sprintDefault:'',osLinks:value?.osLinks&&typeof value.osLinks==='object'&&!Array.isArray(value.osLinks)?value.osLinks:{},projects:Array.isArray(value?.projects)?value.projects.filter(x=>typeof x==='string'):null,owners:Array.isArray(value?.owners)?value.owners.filter(x=>typeof x==='string'):null}}
+function read(storage){try{const value=JSON.parse(storage.getItem(key));return clean(value&&value.demo===undefined?{...value,demo:true,projects:null,owners:null}:value)}catch{return clean(null)}}
 function save(storage,value){const next=clean(value);storage.setItem(key,JSON.stringify(next));return next}
-function scope(data,prefs){const project=x=>prefs.projects===null||prefs.projects.includes(x.project),owner=x=>prefs.owners===null||prefs.owners.includes(x.owner);const items=data.items.filter(project),ids=new Set(items.map(x=>x.id));return {...data,items,hours:data.hours.filter(x=>project(x)&&owner(x)),aging:data.aging.filter(x=>ids.has(x.id))}}
+function scope(data,prefs){const project=x=>prefs.projects===null||prefs.projects.includes(x.project),owner=x=>prefs.owners===null||prefs.owners.includes(x.owner);const items=data.items.map(x=>x.type==='Ordem de Serviço'&&prefs.osLinks?.[String(x.id)]?{...x,sprint:prefs.osLinks[String(x.id)],...window.MetricsData.sprintDates(prefs.osLinks[String(x.id)])}:x).filter(x=>project(x)&&(!x.owner||owner(x))),ids=new Set(items.map(x=>x.id));return {...data,items,hours:data.hours.filter(x=>project(x)&&owner(x)),aging:data.aging.filter(x=>ids.has(x.id))}}
 window.MetricsPreferences={read,save,scope};
 })();
