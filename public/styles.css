@@ -10,3 +10,59 @@
 
 
 .sprint-panel-frame{display:block;width:100%;height:calc(100vh - 260px);min-height:720px;border:1px solid #dbe5f0;border-radius:16px;background:#f1f5f9}.sprint-panel-frame:focus{outline:2px solid #287eff}@media(max-width:700px){.sprint-panel-frame{min-height:680px;height:80vh}}
+/* Responsive layout: keep wide tables inside their own scroll region. */
+.shell,main,#content,.heading>*,.panel-head>*,.overview-banner>*,.selector-panel>*,.filters>*,.stat{min-width:0}
+.stat strong,.stat small,.notice,.overview-banner p{overflow-wrap:anywhere}
+.stat strong{white-space:normal}
+.table-wrap{max-width:100%;overscroll-behavior-x:contain}
+.table-wrap table{min-width:640px}
+.donut-legend>div{flex-wrap:wrap}.donut-legend span{min-width:0;overflow-wrap:anywhere}
+.panel-head{flex-wrap:wrap}.panel-head select{max-width:100%}
+@media(min-width:1025px) and (max-width:1400px){
+ main{padding:24px}.filters{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .stats.primary-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .donut-layout{flex-wrap:wrap}.donut-legend{min-width:160px}
+}
+@media(max-width:1024px){
+ aside{position:relative;width:100%;padding:16px 20px;z-index:2}
+ .brand{margin-bottom:12px}.sidebar-bottom,.nav-group{display:none}
+ #nav{display:flex;gap:8px;overflow-x:auto;padding:3px 0 8px;overscroll-behavior-x:contain;scrollbar-width:thin}
+ #nav a{flex:0 0 auto;white-space:nowrap;padding:11px 13px;margin:0;min-height:44px}
+ .shell{margin-left:0;width:100%}header{padding:12px 20px;height:auto;min-height:64px;gap:12px;flex-wrap:wrap}
+ main{padding:24px 20px}.stats,.stats.eight{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .stats.primary-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .grid,.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .grid:not(.two)>.panel:last-child{grid-column:1/-1}
+ .filters{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .donut-layout{flex-wrap:wrap;gap:16px}.donut-legend{min-width:160px}
+ .overview-banner{padding:20px}.overview-banner h2{overflow-wrap:anywhere}
+}
+@media(max-width:700px){
+ aside{padding:14px 16px}.brand-copy strong{font-size:17px}
+ header{padding:12px 16px;justify-content:flex-end}header>div:first-child{display:none}
+ .header-right{width:100%;justify-content:space-between;gap:10px}#sync-status{font-size:11px}
+ main{padding:20px 14px}.heading{align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:18px}
+ .heading h1{font-size:24px;flex:1 1 200px}.heading button{min-height:44px}
+ .filters{grid-template-columns:repeat(2,minmax(0,1fr));padding:14px;gap:14px 10px}
+ input,select,button{min-height:44px}input,select{font-size:16px;min-width:0}
+ .stats,.stats.eight,.stats.four,.stats.primary-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .stat{padding:16px 12px;min-height:110px}.stat strong,.primary-stats .stat strong{font-size:26px}
+ .grid,.grid.two,.os-layout,.selector-panel{grid-template-columns:minmax(0,1fr)}
+ .grid>.panel:last-child{grid-column:auto}.panel{padding:16px}.panel-head{gap:10px;margin-bottom:16px}
+ .overview-banner{flex-direction:column;align-items:flex-start;padding:18px}.overview-banner h2{font-size:20px}
+ .overview-banner a{white-space:normal}.filter-meta{align-items:flex-start;flex-wrap:wrap}.filter-meta>span{flex:1 1 190px}
+ .table-toolbar{align-items:stretch;flex-direction:column}.table-toolbar input{max-width:none}
+ .tabs{gap:8px}.tabs button{flex:1 1 auto}.pagination{flex-direction:column;align-items:flex-start}
+ .pagination>div{flex-wrap:wrap}.table-wrap{max-height:65vh}.chart{height:auto;min-height:180px}
+ .preference-actions{flex-wrap:wrap;bottom:8px;padding:10px}.preference-actions button{flex:1 1 160px}
+ .preference-list label{align-items:flex-start;line-height:1.6}.preference-list input{margin-top:3px}
+ dialog{width:calc(100vw - 24px);padding:18px;max-height:90dvh}.detail-head h2{font-size:18px;overflow-wrap:anywhere}
+ #toast{left:14px;right:14px;bottom:14px;width:auto;overflow-wrap:anywhere}.loading{padding:50px 15px}
+ footer{padding:18px 14px;overflow-wrap:anywhere}
+}
+@media(max-width:400px){
+ .filters{grid-template-columns:minmax(0,1fr)}.heading h1{flex-basis:100%}.heading button{width:100%}
+ .stat strong,.primary-stats .stat strong{font-size:23px}.stat{padding:14px 10px}
+ .donut-layout{flex-direction:column;align-items:center}.donut-legend{width:100%;max-width:none;min-width:0}
+ .detail-grid{grid-template-columns:minmax(0,1fr)}.panel-head select{width:100%}
+}
