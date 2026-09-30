@@ -79,5 +79,6 @@ if __name__ == '__main__':
     try:
         main()
     except Exception as error:
-        print(str(error), file=sys.stderr)
+        # URLs temporárias de download nunca devem aparecer nos logs públicos.
+        print(str(error) if isinstance(error, RuntimeError) else 'Falha de conexão ou leitura da planilha. A base anterior foi preservada.', file=sys.stderr)
         sys.exit(1)
