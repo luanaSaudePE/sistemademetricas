@@ -1,5 +1,5 @@
 """Download privado, conversão validada e renovação do token no GitHub Secrets."""
-import os, json, gzip, hashlib, datetime, pathlib, base64, sys
+import os, json, gzip, hashlib, datetime, pathlib, base64, sys, unicodedata, re
 from urllib.parse import quote
 import openpyxl
 
@@ -17,16 +17,21 @@ def convert(source, modified=None):
     workbook = openpyxl.load_workbook(source, read_only=True, data_only=True)
     def number(value):
         return isinstance(value, (int, float)) and not isinstance(value, bool)
-    def sheet(name, width, predicate):
+    def sheet(name, width, predicate, extra_headers=None):
         if name not in workbook.sheetnames:
             raise RuntimeError('Aba obrigatória ausente: ' + name)
+        def header_key(value):
+            text = unicodedata.normalize('NFKD', str(value or ''))
+            return re.sub(r'[^a-z0-9]', '', ''.join(c for c in text if not unicodedata.combining(c)).lower())
+        headers = [header_key(v) for v in next(workbook[name].iter_rows(min_row=1, max_row=1, values_only=True))]
+        extra_indices = [next((i for i, key in enumerate(headers) if key in aliases), None) for aliases in (extra_headers or [])]
         rows = []
         for row in workbook[name].iter_rows(min_row=2, values_only=True):
             if not predicate(row):
                 continue
-            rows.append([v.isoformat() if isinstance(v, (datetime.date, datetime.datetime)) else v for v in row[:width]])
+            rows.append([v.isoformat() if isinstance(v, (datetime.date, datetime.datetime)) else v for v in list(row[:width]) + [row[i] if i is not None and i < len(row) else None for i in extra_indices]])
         return rows
-    items = sheet('dados-brutos', 12, lambda r: number(r[0]))
+    items = sheet('dados-brutos', 12, lambda r: number(r[0]), [('responsavelcard', 'responsavel', 'atribuidopara'), ('os', 'numeroos', 'idos')])
     hours = sheet('tempogasto', 12, lambda r: number(r[0]))
     if not items or not hours:
         raise RuntimeError('Importação vazia. A base anterior será preservada.')
