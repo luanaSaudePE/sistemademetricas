@@ -1,0 +1,63 @@
+name: Atualizar métricas do OneDrive
+on:
+  schedule:
+    - cron: '30 10 * * *' # 07:30 em Brasília (UTC-3)
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: atualizar-metricas
+  cancel-in-progress: false
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Verificar configuração
+        id: configuration
+        env:
+          CLIENT: ${{ secrets.ONEDRIVE_CLIENT_ID }}
+          REFRESH: ${{ secrets.ONEDRIVE_REFRESH_TOKEN }}
+          TOKEN: ${{ secrets.AUTOMATION_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$CLIENT" ] || [ -z "$REFRESH" ] || [ -z "$TOKEN" ]; then
+            echo '::warning::Automação aguardando configuração dos três secrets. Consulte AUTOMACAO-GRATUITA.md.'
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.configuration.outputs.ready == 'true'
+        with:
+          token: ${{ secrets.AUTOMATION_GITHUB_TOKEN }}
+      - uses: actions/setup-python@v5
+        if: steps.configuration.outputs.ready == 'true'
+        with:
+          python-version: '3.12'
+      - name: Instalar leitor de planilhas
+        if: steps.configuration.outputs.ready == 'true'
+        run: python -m pip install openpyxl==3.1.5 requests==2.32.5 PyNaCl==1.6.0
+      - name: Baixar e converter a base
+        if: steps.configuration.outputs.ready == 'true'
+        env:
+          ONEDRIVE_CLIENT_ID: ${{ secrets.ONEDRIVE_CLIENT_ID }}
+          ONEDRIVE_REFRESH_TOKEN: ${{ secrets.ONEDRIVE_REFRESH_TOKEN }}
+          AUTOMATION_GITHUB_TOKEN: ${{ secrets.AUTOMATION_GITHUB_TOKEN }}
+          ONEDRIVE_FILE_PATH: ${{ vars.ONEDRIVE_FILE_PATH }}
+        run: python scripts/sync_onedrive.py
+      - name: Validar publicação estática
+        if: steps.configuration.outputs.ready == 'true'
+        run: node scripts/build.cjs
+      - name: Atualizar GitHub
+        if: steps.configuration.outputs.ready == 'true'
+        env:
+          AUTHOR_NAME: ${{ github.repository_owner }}
+          AUTHOR_EMAIL: ${{ vars.AUTOMATION_AUTHOR_EMAIL }}
+        run: |
+          git add data/snapshot.json.gz
+          if git ls-files --error-unmatch data/snapshot.json >/dev/null 2>&1; then git add data/snapshot.json; fi
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "$AUTHOR_NAME"
+          git config user.email "${AUTHOR_EMAIL:-${AUTHOR_NAME}@users.noreply.github.com}"
+          git commit -m 'Atualiza métricas diárias do OneDrive'
+          git push origin HEAD:main
