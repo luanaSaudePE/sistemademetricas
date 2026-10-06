@@ -99,3 +99,5 @@ summary:focus-visible{outline:3px solid #8bbdff;outline-offset:2px}
 }
 
 .preference-tools{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.preference-tools button{font-size:12px;flex:1 1 auto}
+
+.donut-legend button{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:transparent;border:0;padding:6px;border-radius:6px;color:inherit;cursor:pointer}.donut-legend button:hover{background:#edf4ff}.donut-legend button span{flex:1}.donut-legend button i{width:9px;height:9px;border-radius:3px;flex-shrink:0}

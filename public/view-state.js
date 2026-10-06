@@ -2,9 +2,9 @@
 const key='ses-metricas-view-state-v1',views=['dashboard','sprint','compare','evolution','effort','hours','os','preferences'];
 const strings=a=>Array.isArray(a)?[...new Set(a.filter(x=>typeof x==='string'&&x))]:null;
 function clean(view,value={}){
- const filters={},allowed=['project','squad','team','sprint','from','to',...(['hours','effort'].includes(view)?['owner','activity']:view==='os'?['status']:['status','type'])];
- for(const k of allowed){const v=value?.filters?.[k];if(Array.isArray(v)&&((view==='sprint'&&['status','type'].includes(k))||(view==='effort'&&k==='sprint'))){const a=strings(v);if(a.length)filters[k]=a;}else if(typeof v==='string'&&v)filters[k]=v;}
- return {filters,search:typeof value?.search==='string'?value.search:'',tab:['all','planned','unplanned','bugs','spill'].includes(value?.tab)?value.tab:'all',compareSprints:strings(value?.compareSprints)?.slice(0,6)??null,evolutionProjects:strings(value?.evolutionProjects)?.slice(0,6)??null,metric:['cards','plannedPoints','donePoints','bugs','spill'].includes(value?.metric)?value.metric:'cards'};
+ const filters={},allowed=['project','squad','team','sprint','from','to',...(['hours','effort'].includes(view)?['owner','activity']:view==='sprint'?['status','type','owner']:['status','type'])];
+ for(const k of allowed){const v=value?.filters?.[k];if(Array.isArray(v)&&(['status','type'].includes(k)||(view==='effort'&&k==='sprint'))){const a=strings(v);if(a.length)filters[k]=a;}else if(typeof v==='string'&&v)filters[k]=v;}
+ return {filters,search:typeof value?.search==='string'?value.search:'',tab:['all','planned','unplanned','unknownPlan','bugs','spill'].includes(value?.tab)?value.tab:'all',compareSprints:strings(value?.compareSprints)?.slice(0,6)??null,evolutionProjects:strings(value?.evolutionProjects)?.slice(0,6)??null,metric:value?.metric==='donePoints'?'readyPoints':['cards','plannedPoints','readyPoints','bugs','spill'].includes(value?.metric)?value.metric:'cards'};
 }
 function read(storage){try{const raw=JSON.parse(storage?.getItem(key)),pages={};if(raw?.version!==1)return pages;for(const view of views)if(raw.pages?.[view])pages[view]=clean(view,raw.pages[view]);return pages;}catch{return {};}}
 function save(storage,pages){try{storage.setItem(key,JSON.stringify({version:1,pages}));return true;}catch{return false;}}
